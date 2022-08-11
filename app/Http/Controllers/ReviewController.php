@@ -40,11 +40,13 @@ class ReviewController extends Controller
         $product = Product::where('id', $request->product_id)->firstOrFail();
 
         $request->validate([
-            'comment' => 'string|required'
+            'comment' => 'string|required',
+            'rating' => 'integer|required'
         ]);
 
         $review = new Review();
         $review->comment = $request->comment;
+        $review->star_rating = $request->rating;
         $review->user()->associate(auth()->user());
         $review->product()->associate($product);
         $review->save();

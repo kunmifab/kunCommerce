@@ -92,6 +92,7 @@ class CheckoutController extends Controller
                 $product->save();
             }
 
+
             //insert into transactions table
             foreach(Cart::getContent() as $item){
                 $transaction = new Transaction();
@@ -104,10 +105,11 @@ class CheckoutController extends Controller
             }
 
            // insert into escrow table
-            // $escrow = new Escrow();
-            // $escrow->orders()->associate($order->id);
-            // $escrow->amount = Cart::getTotal();
-            // $escrow->save();
+           $newOrder = Order::orderBy('id', 'desc')->first();
+            $escrow = new Escrow();
+            $escrow->order()->associate($newOrder->id);
+            $escrow->amount = Cart::getTotal();
+            $escrow->save();
 
 
             Cart::clear();

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\User;
+use App\Models\Escrow;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 
@@ -79,6 +79,11 @@ class WalletController extends Controller
         $statusEscrow = Order::findOrFail($request->order_id);
         $statusEscrow->escrow_status = 'sent';
         $statusEscrow->save();
+
+        $escrowPaidAt = Escrow::where('order_id', $request->order_id)->firstOrFail();
+        $escrowPaidAt->paid_at = now();
+        $escrowPaidAt->status = 'sent';
+        $escrowPaidAt->save();
 
         return redirect()->route('escrow')->with('success', 'Seller Paid Successfully');
 

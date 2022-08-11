@@ -21,8 +21,8 @@ class EscrowController extends Controller
     public function index()
     {
         //
-        $escrows_received = Order::where('escrow_status', 'received')->orderBy('created_at', 'desc')->get();
-        $escrows_sent = Order::where('escrow_status', 'sent')->orderBy('created_at', 'desc')->get();
+        $escrows_received = Escrow::where('status', 'received')->orderBy('created_at', 'desc')->get();
+        $escrows_sent = Escrow::where('status', 'sent')->orderBy('created_at', 'desc')->get();
 
         return view('escrow', ['escrows_received' => $escrows_received, 'escrows_sent' => $escrows_sent]);
 

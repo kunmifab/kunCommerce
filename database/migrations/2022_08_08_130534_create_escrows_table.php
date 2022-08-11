@@ -18,7 +18,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Order::class);
             $table->bigInteger('amount');
-            $table->string('status')->default('sent');
+            $table->string('status')->default('received');
+            $table->timestamp('paid_at')->nullable()->default(null);
             $table->timestamps();
         });
     }

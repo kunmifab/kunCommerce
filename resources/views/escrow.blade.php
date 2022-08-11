@@ -14,8 +14,8 @@
                     <h3>Escrow Account</h3>
             </div>
             <div>
-               <p><small>Total Amount Held In Escrow:</small> ₦{{number_format($escrows_received->sum('billing_total'))}}</p>
-               <p><small>Total Amount Paid:</small> ₦{{number_format($escrows_sent->sum('billing_total'))}}</p>
+               <p><small>Total Amount Held In Escrow:</small> ₦{{number_format($escrows_received->sum('amount'))}}</p>
+               <p><small>Total Amount Paid:</small> ₦{{number_format($escrows_sent->sum('amount'))}}</p>
             </div>
             <br>
             <div class="btn-group btn-group-lg" role="group" style="width: 100%">
@@ -34,23 +34,23 @@
 
                     <div class="row">
                         <div class="col text-center">
-                            <img src="{{asset($escrow->product->image_path_1)}}" alt="{{$escrow->product->name}}" width="100px">
+                            <img src="{{asset($escrow->order->product->image_path_1)}}" alt="{{$escrow->order->product->name}}" width="100px">
                         </div>
                         <div class="col text-center">
-                            <p><a href="{{route('product.show', ['slug'=> $escrow->product->slug])}}">{{$escrow->product->name}}</a></p>
-                            <p>{{$escrow->product->currency->sign}}{{number_format($escrow->billing_total)}}</p>
-                            <p>{{$escrow->product->user->firstname.' '.$escrow->product->user->lastname}}</p>
+                            <p><a href="{{route('product.show', ['slug'=> $escrow->order->product->slug])}}">{{$escrow->order->product->name}}</a></p>
+                            <p>{{$escrow->order->product->currency->sign}}{{number_format($escrow->order->billing_total)}}</p>
+                            <p>{{$escrow->order->product->user->firstname.' '.$escrow->order->product->user->lastname}}</p>
                         </div>
                         <div class="col">
-                            <p><small>Date:</small> {{$escrow->created_at}}</p>
+                            <p><small>Date:</small> {{$escrow->order->created_at}}</p>
                         </div>
                         <div class="col">
-                            <form action="{{route('wallet.update', ['id'=> $escrow->product->user->wallet->id])}}" method="POST">
+                            <form action="{{route('wallet.update', ['id'=> $escrow->order->product->user->wallet->id])}}" method="POST">
                                 @csrf
                                 @method('PATCH')
-                                <input type="hidden" name="amount" value="{{$escrow->billing_total}}">
-                                <input type="hidden" name="order_id" value="{{$escrow->id}}">
-                                <button type="submit" class="btn border text-white"  onclick= "javascript: return confirm('Are you sure you want to pay {{$escrow->product->user->firstname.' '.$escrow->product->user->lastname}} the sum of {{$escrow->product->currency->sign.''.number_format($escrow->billing_total)}} for the sale of the product {{$escrow->product->name}}?') ">Send to Seller</button>
+                                <input type="hidden" name="amount" value="{{$escrow->order->billing_total}}">
+                                <input type="hidden" name="order_id" value="{{$escrow->order->id}}">
+                                <button type="submit" class="btn border text-white"  onclick= "javascript: return confirm('Are you sure you want to pay {{$escrow->order->product->user->firstname.' '.$escrow->order->product->user->lastname}} the sum of {{$escrow->order->product->currency->sign.''.number_format($escrow->billing_total)}} for the sale of the product {{$escrow->order->product->name}}?') ">Send to Seller</button>
                             </form>
                         </div>
                     </div>
@@ -77,16 +77,16 @@
                         <p class="badge-success rounded-pill text-center p-2">Sent</p>
                     </div>
                     <div class="col text-center">
-                        <img src="{{asset($escrow->product->image_path_1)}}" alt="{{$escrow->product->name}}" width="100px">
+                        <img src="{{asset($escrow->order->product->image_path_1)}}" alt="{{$escrow->order->product->name}}" width="100px">
                     </div>
                     <div class="col text-center">
-                        <p><a href="{{route('product.show', ['slug'=> $escrow->product->slug])}}">{{$escrow->product->name}}</a></p>
-                        <p>{{$escrow->product->currency->sign}}{{number_format($escrow->billing_total)}}</p>
-                        <p>{{$escrow->product->user->firstname.' '.$escrow->product->user->lastname}}</p>
+                        <p><a href="{{route('product.show', ['slug'=> $escrow->order->product->slug])}}">{{$escrow->order->product->name}}</a></p>
+                        <p>{{$escrow->order->product->currency->sign}}{{number_format($escrow->order->billing_total)}}</p>
+                        <p>{{$escrow->order->product->user->firstname.' '.$escrow->order->product->user->lastname}}</p>
                     </div>
                     <div class="col">
-                        <p><small>Date:</small> {{$escrow->created_at}}</p>
-                        <p><small>Payed at:</small> {{$escrow->product->user->wallet->updated_at}}</p>
+                        <p><small>Date:</small> {{$escrow->order->created_at}}</p>
+                        <p><small>Paid at:</small> {{$escrow->paid_at}}</p>
                     </div>
 
                 </div>

@@ -22,4 +22,8 @@ class Order extends Model
     public function product() {
         return $this-> belongsTo(Product::class);
     }
+
+    public function escrow() {
+        return $this-> hasOne(Product::class);
+    }
 }

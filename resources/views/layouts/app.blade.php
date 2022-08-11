@@ -14,6 +14,7 @@
   <!-- Font awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
   <!--add this to have this styles on all pages-->
+  <link rel="stylesheet" href="font-awesome.min.css">
   @yield('css')
   <!--for adding additional styles-->
 </head>

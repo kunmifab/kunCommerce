@@ -49,7 +49,7 @@
       @foreach ($products as $product)
       <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
           <a href="{{route('product.show', ['slug'=> $product->slug])}}">
-              <img class="d-block w-100" src="{{asset($product->image_path_1)}}" alt="First slide">
+              <img class="d-block w-100"  src="{{asset($product->image_path_1)}}" alt="First slide">
               <div class="carousel-caption d-none d-md-block">
                   <h5>{{$product->name}}</h5>
                   <p>...</p>
@@ -82,6 +82,34 @@
             <div class="col-4">
                 <div class="card">
                     <img class="card-img-top" title="{{$product->slug}}" src="{{asset($product->image_path_1)}}" alt="{{$product->name}}">
+                            {{-- for rating view--}}
+                           <div class="text-center mt-2 mb-2">
+                           @if ($product->reviews->count() > 0)
+                           @php
+                               $avgrating = 0;
+                               $avgrating = $avgrating + round($product->reviews->sum('star_rating')/$product->reviews->count());
+                           @endphp
+                           @for ($i=1;$i<=5;$i++)
+                           @if ($i<=$avgrating)
+                           <i class="fa fa-star text-warning"></i>
+                           @else
+                           <i class="fa fa-star starchange" style="color: rgb(194, 188, 188)"></i>
+                           @endif
+
+                           @endfor
+                           <p>{{$product->reviews->count()}} review(s)</p>
+                           @else
+                           <i class="fa fa-star starchange" style="color: rgb(194, 188, 188)"></i>
+                           <i class="fa fa-star starchange" style="color: rgb(194, 188, 188)"></i>
+                           <i class="fa fa-star starchange" style="color: rgb(194, 188, 188)"></i>
+                           <i class="fa fa-star starchange" style="color: rgb(194, 188, 188)"></i>
+                           <i class="fa fa-star starchange" style="color: rgb(194, 188, 188)"></i>
+                           <span>No review Yet</span>
+                           @endif
+
+                           </div>
+
+                           {{-- end of rating view--}}
                     <div class="card-body text-center">
                         <h4 class="card-title"><a href="{{route('product.show', ['slug'=> $product->slug])}}" class="">{{$product->name}}</a></h4>
                         <h5>{{$product->currency->sign .' '. number_format($product->price)}}</h5>

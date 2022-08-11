@@ -15,7 +15,7 @@ class TransactionController extends Controller
     public function index()
     {
         //
-        $transactions = Transaction::where('buyer_id', auth()->user()->id)->get();
+        $transactions = Transaction::where('buyer_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
 
         return view('transactions', ['transactions' => $transactions]);
     }

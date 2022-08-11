@@ -41,7 +41,37 @@
                                 </div>
                             </div>
                         </div>
+
+                                                    {{-- for rating --}}
+                                                    <div class="mt-4 mb-2">
+                                                        @if ($product->reviews->count() > 0)
+                                                        @php
+                                                            $avgrating = 0;
+                                                            $avgrating = $avgrating + round($product->reviews->sum('star_rating')/$product->reviews->count());
+                                                        @endphp
+                                                        @for ($i=1;$i<=5;$i++)
+                                                        @if ($i<=$avgrating)
+                                                        <i class="fa fa-star text-warning"></i>
+                                                        @else
+                                                        <i class="fa fa-star starchange" style="color: rgb(194, 188, 188)"></i>
+                                                        @endif
+
+                                                        @endfor
+                                                        <p>{{$product->reviews->count()}} review(s)</p>
+                                                        @else
+                                                        <i class="fa fa-star starchange" style="color: rgb(194, 188, 188)"></i>
+                                                        <i class="fa fa-star starchange" style="color: rgb(194, 188, 188)"></i>
+                                                        <i class="fa fa-star starchange" style="color: rgb(194, 188, 188)"></i>
+                                                        <i class="fa fa-star starchange" style="color: rgb(194, 188, 188)"></i>
+                                                        <i class="fa fa-star starchange" style="color: rgb(194, 188, 188)"></i>
+                                                        <span>No review Yet</span>
+                                                        @endif
+
+                                                        </div>
+
+                                                        {{-- end of rating --}}
                 </div>
+
             </div>
 
 
@@ -90,6 +120,8 @@
             </div>
           </div>
           <br>
+
+          {{-- for reviews --}}
           <div class="container text-white">
             <div class=" bg-dark p-3">
                 <div class="btn-group btn-group-lg" style="width: 100%">
@@ -107,6 +139,27 @@
                   </div>
                   <div class="col-10">
                       <p>{{$review->comment}}</p>
+                     {{-- for rating view --}}
+                     <div class="mt-2 mb-2">
+                       @if ($product->reviews->count() > 0)
+                       @php
+                           $avgrating = 0;
+                           $avgrating = $avgrating + round($review->star_rating);
+                       @endphp
+                       @for ($i=1;$i<=5;$i++)
+                       @if ($i<=$avgrating)
+                       <i class="fa fa-star text-warning"></i>
+                       @else
+                       <i class="fa fa-star starchange" style="color: rgb(194, 188, 188)"></i>
+                       @endif
+
+                       @endfor
+
+                       @endif
+
+                       </div>
+
+                       {{-- end of rating view--}}
                       <div class="row">
                         <div class="col">
                             <p><small>Username: {{$review->user->username}}</a></small></p>
