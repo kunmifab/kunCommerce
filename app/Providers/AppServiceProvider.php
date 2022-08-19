@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Category;
 use App\Models\Product;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,10 +33,12 @@ class AppServiceProvider extends ServiceProvider
             $products = Product::all();
             $randomProducts = Product::inRandomOrder()->take(10)->get();
             $randomCategories = Category::inRandomOrder()->take(5)->get();
+            $searchword = request()->search;
             $view->with('categories', $categories);
             $view->with('products', $products);
             $view->with('randomProducts', $randomProducts);
             $view->with('randomCategories', $randomCategories);
+            $view->with('searchword', $searchword);
         });
     }
 }

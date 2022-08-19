@@ -30,7 +30,7 @@
     @endif
 
 
-    <div class="contianer">
+    <div class="container">
             <div class="row">
 
                 @foreach ($categories as $category)

@@ -63,6 +63,21 @@
             @endif
         </a>
           </li>
+          <li>
+              <form action="{{route('search')}}" method="GET">
+                @csrf
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" placeholder="Search for products or categories">
+                        <div class="input-group-append">
+                            <button class="btn btn-warning">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+              </form>
+
+          </li>
+
 
 
 

@@ -9,7 +9,9 @@ use App\Http\Controllers\ConfirmationController;
 use App\Http\Controllers\EscrowController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +56,8 @@ Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.s
 
 Route::get('review/{slug}', [ReviewController::class, 'show'])->name('review.show');
 Route::post('review', [ReviewController::class, 'store'])->name('review.store');
+
+Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/product.php';
