@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
-use App\Models\Product;
-use App\Models\Review;
 use Illuminate\Http\Request;
 
-class ReviewController extends Controller
+class NotificationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,6 +15,8 @@ class ReviewController extends Controller
     public function index()
     {
         //
+        $notifications = Notification::all()->sortByDesc("created_at");
+        return view('notifications', ['notifications' => $notifications]);
     }
 
     /**
@@ -38,28 +38,6 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
         //
-        $product = Product::where('id', $request->product_id)->firstOrFail();
-
-        $request->validate([
-            'comment' => 'string|required',
-            'rating' => 'integer|required'
-        ]);
-
-        $review = new Review();
-        $review->comment = $request->comment;
-        $review->star_rating = $request->rating;
-        $review->user()->associate(auth()->user());
-        $review->product()->associate($product);
-        $review->save();
-
-        $latestReview = Review::orderBy('created_at', 'desc')->first();
-        $notification = new Notification();
-        $notification->type = "Review";
-        $notification->content = "By".' '. auth()->user()->firstname.' '.auth()->user()->lastname;
-        $notification->review()->associate($latestReview->id);
-        $notification->save();
-
-        return redirect()->route('transactions')->with('success', 'Review Posted Successfully!');
     }
 
     /**
@@ -68,12 +46,9 @@ class ReviewController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show($id)
     {
         //
-        $product = Product::where('slug', $slug)->firstOrFail();
-
-        return view('review', ['product' => $product]);
     }
 
     /**
@@ -94,9 +69,13 @@ class ReviewController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
+        Notification::where('status', 'new')->update(['status' => $request->status]);;
+
+        return back();
+
     }
 
     /**

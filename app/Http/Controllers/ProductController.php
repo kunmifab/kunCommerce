@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Currency;
+use App\Models\Notification;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -90,6 +91,13 @@ class ProductController extends Controller
         $product->currency()->associate($currency);
         $product->user()->associate($auth_user);
         $product->save();
+
+        $latestProduct = Product::orderBy('created_at', 'desc')->first();
+        $notification = new Notification();
+        $notification->type = "Product";
+        $notification->content = "A new product".' '.Str::title($request->name).' '."has been added by".' '. auth()->user()->firstname.' '.auth()->user()->lastname;
+        $notification->product()->associate($latestProduct->id);
+        $notification->save();
 
         return redirect()->route('product.index');
     }
@@ -276,6 +284,6 @@ class ProductController extends Controller
         return view('product.payment');
     }
 
-  
+
 
 }

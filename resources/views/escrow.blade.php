@@ -50,7 +50,7 @@
                                 @method('PATCH')
                                 <input type="hidden" name="amount" value="{{$escrow->order->billing_total}}">
                                 <input type="hidden" name="order_id" value="{{$escrow->order->id}}">
-                                <button type="submit" class="btn border text-white"  onclick= "javascript: return confirm('Are you sure you want to pay {{$escrow->order->product->user->firstname.' '.$escrow->order->product->user->lastname}} the sum of {{$escrow->order->product->currency->sign.''.number_format($escrow->billing_total)}} for the sale of the product {{$escrow->order->product->name}}?') ">Send to Seller</button>
+                                <button type="submit" class="btn border text-white"  onclick= "javascript: return confirm('Are you sure you want to pay {{$escrow->order->product->user->firstname.' '.$escrow->order->product->user->lastname}} the sum of {{$escrow->order->product->currency->sign.''.number_format($escrow->order->billing_total)}} for the sale of the product {{$escrow->order->product->name}}?') ">Send to Seller</button>
                             </form>
                         </div>
                     </div>

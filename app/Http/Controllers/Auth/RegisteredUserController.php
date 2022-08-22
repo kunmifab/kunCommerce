@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Traits\StripeHelperTrait;
 use App\Models\Account;
+use App\Models\Notification;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Wallet;
@@ -57,6 +58,13 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'role_id' => $request->role_id,
         ]);
+
+        $latestUser = User::orderBy('created_at', 'desc')->first();
+        $notification = new Notification();
+        $notification->type = "User";
+        $notification->content = "A new account has been created by".' '. auth()->user()->firstname.' '.auth()->user()->lastname;
+        $notification->user()->associate($latestUser->id);
+        $notification->save();
 
 
         event(new Registered($user));

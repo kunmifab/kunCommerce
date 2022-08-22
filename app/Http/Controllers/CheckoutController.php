@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Escrow;
+use App\Models\Notification;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
@@ -110,6 +111,15 @@ class CheckoutController extends Controller
             $escrow->order()->associate($newOrder->id);
             $escrow->amount = Cart::getTotal();
             $escrow->save();
+
+            // insert into the notifications table
+
+            $latestOrder = Order::orderBy('created_at', 'desc')->first();
+            $notification = new Notification();
+            $notification->type = "Order";
+            $notification->content = "Item(s) bought by".' '. auth()->user()->firstname.' '.auth()->user()->lastname;
+            $notification->order()->associate($latestOrder->id);
+            $notification->save();
 
 
             Cart::clear();

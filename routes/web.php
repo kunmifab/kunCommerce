@@ -7,6 +7,7 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ConfirmationController;
 use App\Http\Controllers\EscrowController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
@@ -53,6 +54,9 @@ Route::post('order-post', [SubscriptionController::class, 'orderPost'])->name('o
 Route::get('/thankyou', [ConfirmationController::class, 'index'])->name('confirmation.index');
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+
+Route::get('notifications', [NotificationController::class, 'index'])->name('notification.index');
+Route::patch('notifications', [NotificationController::class, 'update'])->name('notification.update');
 
 Route::get('review/{slug}', [ReviewController::class, 'show'])->name('review.show');
 Route::post('review', [ReviewController::class, 'store'])->name('review.store');

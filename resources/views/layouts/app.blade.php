@@ -6,6 +6,7 @@
     <title>@yield('title')</title>
   <!-- Stylesheet -->
   <!-- Bootstrap CSS -->
+
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
   <!-- Data Table -->
@@ -19,7 +20,7 @@
   <!--for adding additional styles-->
 </head>
 
-<body class="bg-dark">
+<body class="bg-dark" @if ($newNotifications->count() > 0) onscroll="onScrollSubmit()" @endif>
 
   <!-- Navbar Area Start -->
   <header>
@@ -28,7 +29,7 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
            <span class="navbar-toggler-icon"></span>
        </button>
-      <div class="container collapse navbar-collapse" id="navbarNav">
+      <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active mr-3">
             <a class="nav-link" href="{{url('/')}}"><i class="fas"></i>Home <span class="sr-only">(current)</span></a>
@@ -93,25 +94,36 @@
           </li>
           @endguest @auth
           @if (auth()->user()->role->id != 2)
-          <li class="nav-item nav-link">Wallet: <span class="bg-dark p-2 text-success">₦{{number_format(auth()->user()->wallet->amount)}}</span></li>
+          <li class="nav-item nav-link">Wallet: <span class="bg-dark p-1 text-success">₦{{number_format(auth()->user()->wallet->amount)}}</span></li>
           @endif
 
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i>
-              {{Auth::user()->firstname}}
+              {{Auth::user()->firstname}}@if (auth()->user()->role->id == 1) @if ($newNotifications->count()>= 1)
+                <span class="p-1">  <i class="fas fa-bell"></i><sup class="text-danger p-1 h6">{{$newNotifications->count()}}</sup> </span>
+              @endif
+              @endif
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="{{url('dashboard')}}"><i class="far fa-id-badge"></i></i> Profile</a>
               <a class="dropdown-item" href="{{route('transactions')}}"><i class="fas fa-envelope-open-text"></i> Transactions</a>
               @if (auth()->user()->role->id == 1)
               <a class="dropdown-item" href="{{route('escrow')}}"><i class="fas fa-envelope-open-text"></i> Escrow Account</a>
+              <a class="dropdown-item" href="{{route('notification.index')}}"><i class="fas fa-bell"></i> Notifications <span class="text-success bg-secondary p-1">{{$newNotifications->count()}}</span></a>
               @endif
 
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{{url('logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
           </li>
+          @if (auth()->user()->role->id == 1)
+          <li class="nav-item nav-link"><span class="h5 text-danger">ADMIN</span></li>
+          @endif
+          @if (auth()->user()->role->id == 3)
+          <li class="nav-item nav-link"><span class="h5 text-danger">SELLER</span></li>
+          @endif
+
           @endauth
         </ul>
       </div>
@@ -255,6 +267,7 @@
   <!-- **** All JS Files here ***** -->
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
